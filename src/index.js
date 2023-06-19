@@ -25,43 +25,48 @@ formEl.addEventListener('submit', onSearch);
 loadMoreEl.classList.add('visually-hidden');
 loadMoreEl.addEventListener('click', onLoad);
 
-const PER_PAGE = 10;
-let counterPage = null;
-let searchWord = '';
+const options = {
+  q: '',
+  page: "",
+  per_page: 10,
+
+
+}
 
 function onSearch(e) {
   e.preventDefault();
-  counterPage = 1;
+  options.page = 1;
   galleryEl.innerHTML = '';
   const {
     searchQuery: { value },
   } = e.target.elements;
-  searchWord = value;
+  options.q = value.trim();
   if (!value) {
-    return Notify.failure('Введіть слово');
+    throw Notify.failure('Введіть слово');
   }
 
-  pageGallery(searchWord, counterPage, PER_PAGE);
+  pageGallery(options);
   e.target.elements.searchQuery.value = '';
   loadMoreEl.classList.remove('visually-hidden');
 }
 
 function onLoad() {
-  counterPage += 1;
-  console.log(counterPage);
-  pageGallery(searchWord, counterPage, PER_PAGE);
+  options.page += 1;
+  console.log(options.page);
+  pageGallery(options);
   // lightbox.refresh();
 }
 // export { counterPage, galleryEl, loadMoreEl };
 
-function pageGallery(value, page, per_page) {
-  const searhObj = createRecvest(value.trim(), page, per_page);
+function pageGallery(options) {
+  const { page,per_page } = options;
+  const searhObj = createRecvest(options);
   searhObj
     .then(obj => {
-      // console.log('obj.totalHits ', obj.totalHits / per_page);
-      // console.log('counterPage ', counterPage);
-      // console.log('per_page ', per_page);
-      if (counterPage - obj.totalHits / per_page >= 0) {
+      console.log('obj.totalHits ', obj.totalHits / per_page);
+      console.log('counterPage ', page);
+      console.log('per_page ', per_page);
+      if (page - obj.totalHits / per_page >= 0) {
         loadMoreEl.classList.add('visually-hidden');
         Notify.failure(
           "We're sorry, but you've reached the end of search results."
@@ -72,14 +77,21 @@ function pageGallery(value, page, per_page) {
     .catch(err => console.log(err));
 }
 
-function createRecvest(value, page, PER_PAGE) {
+function createRecvest(options) {
   Loading.circle();
+  const searchParams = new URLSearchParams({
+    ...options,
+    orientation: "horizontal",
+    mage_type: "photo",
+    safesearch: true,
+    key: '37410571-78e708f3fcce6ce73b7e36a87',
+
+  })
 
   const BASE_URL = 'https://pixabay.com/api';
-  const API_KEY = '37410571-78e708f3fcce6ce73b7e36a87';
   return axios
     .get(
-      `${BASE_URL}?key=${API_KEY}&orientation=horizontal&image_type=photo&safesearch=true&q=${value}&page=${page}&per_page=${PER_PAGE}`
+      `${BASE_URL}?${searchParams}`
     )
     .then(resp => {
       console.log(resp.data);
