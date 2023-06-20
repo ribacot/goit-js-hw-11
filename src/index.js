@@ -1,17 +1,16 @@
-// import { pageGallery } from './pageGallery';
 import axios from 'axios';
 
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
 import { Loading } from 'notiflix';
-import SimpleLightbox from 'simplelightbox';
-import 'simplelightbox/dist/simple-lightbox.min.css';
+// import SimpleLightbox from 'simplelightbox';
+// import 'simplelightbox/dist/simple-lightbox.min.css';
 
-let lightbox = new SimpleLightbox('.gallery a', {
-  captionsData: 'alt',
-  captionDelay: 250,
-  overlayOpacity: 0.9,
-  closeText: '&#10007;',
-});
+// let lightbox = new SimpleLightbox('.gallery a', {
+//   captionsData: 'alt',
+//   captionDelay: 250,
+//   overlayOpacity: 0.9,
+//   closeText: '&#10007;',
+// });
 
 // lightbox.on('error.simplelightbox', function (e) {
 //   console.log(e); // some usefull information
@@ -27,86 +26,78 @@ loadMoreEl.addEventListener('click', onLoad);
 
 const options = {
   q: '',
-  page: "",
+  page: null,
   per_page: 10,
+};
 
-
-}
-
-function onSearch(e) {
-  e.preventDefault();
-  options.page = 1;
-  galleryEl.innerHTML = '';
-  const {
-    searchQuery: { value },
-  } = e.target.elements;
-  options.q = value.trim();
-  if (!value) {
-    throw Notify.failure('Введіть слово');
+async function onSearch(e) {
+  try {
+    e.preventDefault();
+    options.page = 1;
+    galleryEl.innerHTML = '';
+    const {
+      searchQuery: { value },
+    } = e.target.elements;
+    options.q = value.trim();
+    if (!value) {
+      return Notify.failure('Введіть слово');
+    }
+    await createPageGallery(options);
+    e.target.elements.searchQuery.value = '';
+  } catch {
+    Notify.failure('errrr');
+    e.target.elements.searchQuery.value = '';
+  } finally {
+    Loading.remove();
   }
-
-  pageGallery(options);
-  e.target.elements.searchQuery.value = '';
-  loadMoreEl.classList.remove('visually-hidden');
 }
 
 function onLoad() {
   options.page += 1;
-  console.log(options.page);
-  pageGallery(options);
-  // lightbox.refresh();
-}
-// export { counterPage, galleryEl, loadMoreEl };
-
-function pageGallery(options) {
-  const { page,per_page } = options;
-  const searhObj = createRecvest(options);
-  searhObj
-    .then(obj => {
-      console.log('obj.totalHits ', obj.totalHits / per_page);
-      console.log('counterPage ', page);
-      console.log('per_page ', per_page);
-      if (page - obj.totalHits / per_page >= 0) {
-        loadMoreEl.classList.add('visually-hidden');
-        Notify.failure(
-          "We're sorry, but you've reached the end of search results."
-        );
-      }
-      return galleryEl.insertAdjacentHTML('beforeend', createGalerry(obj));
-    })
-    .catch(err => console.log(err));
+  createPageGallery(options).catch(err => console.log(err.message));
 }
 
-function createRecvest(options) {
+async function createPageGallery(optionsObj) {
+      loadMoreEl.classList.remove('visually-hidden');
+
+  const { page, per_page } = optionsObj;
+  const searhObj = await serviceImage(optionsObj);
+
+  console.log('searhObj:', searhObj);
+  console.log(page);
+  console.log(page - searhObj.totalHits / per_page);
+  if (page - searhObj.totalHits / per_page >= 0) {
+    loadMoreEl.classList.add('visually-hidden');
+    Notify.failure(
+      "We're sorry, but you've reached the end of search results."
+    );
+  }
+  galleryEl.insertAdjacentHTML('beforeend', createGalerryDom(searhObj));
+  Loading.remove(300);
+}
+
+async function serviceImage(optionsObj) {
   Loading.circle();
-  const searchParams = new URLSearchParams({
-    ...options,
-    orientation: "horizontal",
-    mage_type: "photo",
-    safesearch: true,
-    key: '37410571-78e708f3fcce6ce73b7e36a87',
-
-  })
-
   const BASE_URL = 'https://pixabay.com/api';
-  return axios
-    .get(
-      `${BASE_URL}?${searchParams}`
-    )
-    .then(resp => {
-      console.log(resp.data);
-      if (!resp.data.total) {
-        return Notify.failure(
-          'Sorry, there are no images matching your search query. Please try again.'
-        );
-      }
-      return resp.data;
-    })
-    .catch(err => Notify.failure(`${err.message}`))
-    .finally(Loading.remove(300));
+  const resp = await axios.get(BASE_URL, {
+    params: {
+      ...optionsObj,
+      orientation: 'horizontal',
+      mage_type: 'photo',
+      safesearch: true,
+      key: '37410571-78e708f3fcce6ce73b7e36a87',
+    },
+  });
+  if (!resp.data.total) {
+    loadMoreEl.classList.add('visually-hidden');
+    return Notify.failure(
+      'Sorry, there are no images matching your search query. Please try again.'
+    );
+  }
+  return resp.data;
 }
 
-function createGalerry(obj) {
+function createGalerryDom(obj) {
   const { hits: phots } = obj;
   return phots
     .map(
@@ -139,5 +130,3 @@ function createGalerry(obj) {
     )
     .join('');
 }
-
-
