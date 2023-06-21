@@ -65,10 +65,10 @@ async function createPageGallery(optionsObj) {
 
   console.log('searhObj:', searhObj);
   console.log(page);
-  console.log(page - searhObj.totalHits / per_page);
+  console.log(searhObj.totalHits / per_page);
   if (page - searhObj.totalHits / per_page >= 0) {
     loadMoreEl.classList.add('visually-hidden');
-    Notify.failure(
+    Notify.info(
       "We're sorry, but you've reached the end of search results."
     );
   }
@@ -98,8 +98,8 @@ async function serviceImage(optionsObj) {
 }
 
 function createGalerryDom(obj) {
-  const { hits: phots } = obj;
-  return phots
+  const { hits } = obj;
+  return hits
     .map(
       ({
         webformatURL,
