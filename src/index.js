@@ -78,7 +78,7 @@ async function createPageGallery(optionsObj) {
 
 async function serviceImage(optionsObj) {
   Loading.circle();
-  const BASE_URL = 'https://pixabay.com/api';
+  const BASE_URL = 'https://pixabay.com/api/';
   const resp = await axios.get(BASE_URL, {
     params: {
       ...optionsObj,
