@@ -12,24 +12,48 @@ export function createGalerryDom(obj) {
         comments,
         downloads,
         views,
-      }) => `<a href="${largeImageURL}"> <div class="photo-card picture "><div class="gallery__item "><img  class="gallery__image" src="${webformatURL}" alt="${tags}" loading="lazy" width="300" />
-</div>
+      }) => `
+      <div class="photo-card picture ">
+      <a href="${largeImageURL}"> 
+      <div class="gallery__item ">
+      <img  class="gallery__image" src="${webformatURL}" alt="${tags}" loading="lazy" width="300px" />
+</div></a>
  
+  <div class="thumb">
   <div class="info">
-    <p class="info-item">
-      <b>Likes: ${likes}</b>
-    </p>
-    <p class="info-item">
-      <b>Views: ${views}</b>
-    </p>
+  <p class="info-item">
+  <b>Likes: ${likes}</b>
+</p>
+<p class="info-item">
+  <b>Views: ${views}</b>
+</p></div>
+<div class="info">
+
     <p class="info-item">
       <b>Comments: ${comments}</b>
     </p>
     <p class="info-item">
       <b>Downloads: ${downloads}</b>
-    </p>
+    </p>  </div>
+
   </div>
-</div> </a>`
+</div> `
     )
     .join('');
 }
+{/* <div class="photo-card">
+  c  <div class="info">
+    <p class="info-item">
+      <b>Likes</b>
+    </p>
+    <p class="info-item">
+      <b>Views</b>
+    </p>
+    <p class="info-item">
+      <b>Comments</b>
+    </p>
+    <p class="info-item">
+      <b>Downloads</b>
+    </p>
+  </div>
+</div> */}
