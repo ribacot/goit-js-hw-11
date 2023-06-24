@@ -167,13 +167,10 @@ input:hover,input:focus{
 		5px 6px 11px 0px rgba(20, 1, 135, 0.85);
 }
 
-/* .largeImg{
-  border-radius: 5px;
-} */
 
 .photo-card{
   width: 300px;
-  min-height: 350px;
+  min-height: 300px;
 	display: flex;
 	flex-wrap: wrap;
   box-shadow: 4px 6px 16px 0px rgba(111, 15, 115, 0.2),
