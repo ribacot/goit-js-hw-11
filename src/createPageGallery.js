@@ -6,7 +6,7 @@ import { Loading } from 'notiflix';
 
 export async function createPageGallery(optionsObj) {
   try {
-        lightbox.refresh();
+    lightbox.refresh();
 
     const { page, per_page } = optionsObj;
     if (page === 1) {
@@ -18,25 +18,20 @@ export async function createPageGallery(optionsObj) {
         'Sorry, there are no images matching your search query. Please try again.'
       );
     }
-    // if (page === 1) {
-    //   Notify.info(`Hooray! We found ${searhObj.totalHits} images`);
-    // }
     galleryEl.insertAdjacentHTML('beforeend', createGalerryDom(searhObj));
-          if (page >= searhObj.totalHits / per_page) {
-            observer.unobserve(guardEl);
-           return  Notify.info(
-              "We're sorry, but you've reached the end of search results."
-            );
-          }
+    if (page >= searhObj.totalHits / per_page) {
+      observer.unobserve(guardEl);
+      return Notify.info(
+        "We're sorry, but you've reached the end of search results."
+      );
+    }
 
     if (page === 1) {
       observer.observe(guardEl);
-            Notify.info(`Hooray! We found ${searhObj.totalHits} images`);
-
+      Notify.info(`Hooray! We found ${searhObj.totalHits} images`);
     }
-
   } catch (err) {
-    galleryEl.innerHTML=''
+    galleryEl.innerHTML = '';
     console.log(err.message);
   } finally {
     Loading.remove(300);
