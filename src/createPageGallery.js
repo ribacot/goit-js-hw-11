@@ -6,7 +6,6 @@ import { Loading } from 'notiflix';
 
 export async function createPageGallery(optionsObj) {
   try {
-    lightbox.refresh();
 
     const { page, per_page } = optionsObj;
     if (page === 1) {
@@ -35,5 +34,7 @@ export async function createPageGallery(optionsObj) {
     console.log(err.message);
   } finally {
     Loading.remove(300);
+        lightbox.refresh();
+
   }
 }
