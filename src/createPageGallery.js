@@ -1,40 +1,43 @@
-import { serviceImage } from "./serviceImage";
-import { createGalerryDom } from "./createGalerryDom";
-import { loadMoreEl, galleryEl } from ".";
-import { Notify } from "notiflix";
-import { Loading } from "notiflix";
-import { lightbox } from ".";
-
+import { serviceImage } from './serviceImage';
+import { createGalerryDom } from './createGalerryDom';
+import { galleryEl, lightbox, observer, guardEl } from '.';
+import { Notify } from 'notiflix';
+import { Loading } from 'notiflix';
 
 export async function createPageGallery(optionsObj) {
   try {
-    loadMoreEl.classList.remove('visually-hidden');
+        lightbox.refresh();
 
     const { page, per_page } = optionsObj;
+    if (page === 1) {
+      Loading.circle();
+    }
     const searhObj = await serviceImage(optionsObj);
-
     if (searhObj.hits.length === 0) {
-      loadMoreEl.classList.add('visually-hidden');
       return Notify.info(
         'Sorry, there are no images matching your search query. Please try again.'
       );
     }
+    // if (page === 1) {
+    //   Notify.info(`Hooray! We found ${searhObj.totalHits} images`);
+    // }
+    galleryEl.insertAdjacentHTML('beforeend', createGalerryDom(searhObj));
+          if (page >= searhObj.totalHits / per_page) {
+            observer.unobserve(guardEl);
+           return  Notify.info(
+              "We're sorry, but you've reached the end of search results."
+            );
+          }
 
     if (page === 1) {
-      Notify.info(`Hooray! We found ${searhObj.totalHits} images`);
+      observer.observe(guardEl);
+            Notify.info(`Hooray! We found ${searhObj.totalHits} images`);
+
     }
 
-    if (page >= searhObj.totalHits / per_page) {
-      loadMoreEl.classList.add('visually-hidden');
-      Notify.info("We're sorry, but you've reached the end of search results.");
-    }
-
-    galleryEl.insertAdjacentHTML('beforeend', createGalerryDom(searhObj));
-    lightbox.refresh();
   } catch (err) {
+    galleryEl.innerHTML=''
     console.log(err.message);
-    Notify.failure(err.message);
-    loadMoreEl.classList.add('visually-hidden');
   } finally {
     Loading.remove(300);
   }

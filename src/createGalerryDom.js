@@ -1,5 +1,3 @@
-
-
 export function createGalerryDom(obj) {
   const { hits } = obj;
   return hits
@@ -41,19 +39,3 @@ export function createGalerryDom(obj) {
     )
     .join('');
 }
-{/* <div class="photo-card">
-  c  <div class="info">
-    <p class="info-item">
-      <b>Likes</b>
-    </p>
-    <p class="info-item">
-      <b>Views</b>
-    </p>
-    <p class="info-item">
-      <b>Comments</b>
-    </p>
-    <p class="info-item">
-      <b>Downloads</b>
-    </p>
-  </div>
-</div> */}

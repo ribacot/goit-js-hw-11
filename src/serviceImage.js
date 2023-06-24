@@ -1,8 +1,7 @@
-import axios from "axios";
-import { Loading } from 'notiflix';
+import axios from 'axios';
 
 export async function serviceImage(optionsObj) {
-  Loading.circle();
+  // Loading.circle();
   const BASE_URL = 'https://pixabay.com/api/';
   const resp = await axios.get(BASE_URL, {
     params: {
