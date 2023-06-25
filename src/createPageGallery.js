@@ -7,10 +7,11 @@ import { Loading } from 'notiflix';
 export async function createPageGallery(optionsObj) {
   try {
 
-    const { page, per_page } = optionsObj;
+    const { page, per_page ,q} = optionsObj;
     if (page === 1) {
       Loading.circle();
     }
+    if(!q){return }
     const searhObj = await serviceImage(optionsObj);
     if (searhObj.hits.length === 0) {
       return Notify.info(
