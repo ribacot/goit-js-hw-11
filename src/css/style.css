@@ -128,7 +128,6 @@ input:hover,input:focus{
     height: 200px;
 
 
-      object-fit: cover;
 
     box-shadow: 4px 6px 16px 0px rgba(111, 15, 115, 0.2),
 		5px 6px 11px 0px rgba(20, 1, 135, 0.85);
@@ -153,6 +152,7 @@ input:hover,input:focus{
 
 
 .gallery__image {
+  object-fit: contain;
   height: 100%;
   width: 100%; 
   transition: transform var(--animation-duration) var(--timing-function); 
