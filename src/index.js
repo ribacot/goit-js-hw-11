@@ -21,7 +21,7 @@ formEl.addEventListener('submit', onSearch);
 
 let optionsObserver = {
   root: null,
-  rootMargin: "400px",
+  rootMargin: "800px",
   threshold: 1.0,
 };
 
