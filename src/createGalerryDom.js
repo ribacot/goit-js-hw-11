@@ -14,7 +14,7 @@ export function createGalerryDom(obj) {
       <div class="photo-card picture ">
       <a href="${largeImageURL}"> 
       <div class="gallery__item ">
-      <img  class="gallery__image" src="${webformatURL}" alt="${tags}" loading="lazy" width="300px" />
+      <img  class="gallery__image" src="${webformatURL}" alt="${tags}" loading="lazy" />
 </div></a>
  
   <div class="thumb">
