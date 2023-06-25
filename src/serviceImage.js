@@ -7,7 +7,7 @@ export async function serviceImage(optionsObj) {
     params: {
       ...optionsObj,
       orientation: 'horizontal',
-      mage_type: 'photo',
+      image_type: 'photo',
       safesearch: true,
       key: '37410571-78e708f3fcce6ce73b7e36a87',
       // key: '37410571-78e708f3fcce6ce73b7e36a8',
