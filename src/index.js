@@ -21,7 +21,7 @@ formEl.addEventListener('submit', onSearch);
 
 let optionsObserver = {
   root: null,
-  rootMargin: '400px',
+  rootMargin: "400px",
   threshold: 1.0,
 };
 
@@ -30,7 +30,7 @@ export let observer = new IntersectionObserver(onLoad, optionsObserver);
 const options = {
   q: '',
   page: null,
-  per_page: 10,
+  per_page: 40 ,
 };
 
 async function onSearch(e) {
