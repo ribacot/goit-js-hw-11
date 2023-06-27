@@ -167,9 +167,16 @@ input:hover,input:focus{
 
 .sl-image {
 	border-radius: 5px;
-	overflow: hidden;
 	box-shadow: 4px 6px 16px 0px rgba(111, 15, 115, 0.2),
 		5px 6px 11px 0px rgba(20, 1, 135, 0.85);
+}
+.sl-caption {
+  text-align: center;
+  border-radius: 5px;
+	box-shadow: 4px -5px 16px 0px rgba(111, 15, 115, 0.2),
+		5px -5px 11px 0px rgba(20, 1, 135, 0.85);
+    background-color: rgb(182, 183, 228);
+
 }
 
 
