@@ -1,17 +1,19 @@
-import { serviceImage } from './serviceImage';
-import { createGalerryDom } from './createGalerryDom';
-import { galleryEl, lightbox, observer, guardEl } from '.';
 import { Notify } from 'notiflix';
 import { Loading } from 'notiflix';
 
+import { serviceImage } from './serviceImage';
+import { createGalerryDom } from './createGalerryDom';
+import { galleryEl, lightbox, observer, guardEl } from '.';
+
 export async function createPageGallery(optionsObj) {
   try {
-
-    const { page, per_page ,q} = optionsObj;
+    const { page, per_page, q } = optionsObj;
     if (page === 1) {
       Loading.circle();
     }
-    if(!q){return }
+    if (!q) {
+      return;
+    }
     const searhObj = await serviceImage(optionsObj);
     if (searhObj.hits.length === 0) {
       return Notify.info(
@@ -35,7 +37,6 @@ export async function createPageGallery(optionsObj) {
     console.log(err.message);
   } finally {
     Loading.remove(300);
-        lightbox.refresh();
-
+    lightbox.refresh();
   }
 }
